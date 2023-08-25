@@ -1,0 +1,9 @@
+{
+	"name": "efn-aug23-730m",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "574bea3e-b4a2-4f06-872d-1148693fef6a",
+		"tenantId": "d9a10ebb-3610-4e37-9cac-dd8cc48e1d5d"
+	}
+}
