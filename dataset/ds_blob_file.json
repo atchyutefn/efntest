@@ -1,0 +1,84 @@
+{
+	"name": "ds_blob_file",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blob_730am",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "ADE July23 Batch E_Leads_2023-07-19_2023-09-20 1.csv",
+				"container": "con2"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "created_time",
+				"type": "String"
+			},
+			{
+				"name": "ad_id",
+				"type": "String"
+			},
+			{
+				"name": "ad_name",
+				"type": "String"
+			},
+			{
+				"name": "adset_id",
+				"type": "String"
+			},
+			{
+				"name": "adset_name",
+				"type": "String"
+			},
+			{
+				"name": "campaign_id",
+				"type": "String"
+			},
+			{
+				"name": "campaign_name",
+				"type": "String"
+			},
+			{
+				"name": "form_id",
+				"type": "String"
+			},
+			{
+				"name": "form_name",
+				"type": "String"
+			},
+			{
+				"name": "is_organic",
+				"type": "String"
+			},
+			{
+				"name": "platform",
+				"type": "String"
+			},
+			{
+				"name": "full_name",
+				"type": "String"
+			},
+			{
+				"name": "email",
+				"type": "String"
+			},
+			{
+				"name": "phone_number",
+				"type": "String"
+			}
+		]
+	}
+}

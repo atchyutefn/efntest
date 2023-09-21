@@ -1,0 +1,117 @@
+{
+	"name": "Email",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_blob_file",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Wait1",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": {
+									"value": "@rand(3,8)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Web1",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Wait1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://prod-23.centralindia.logic.azure.com:443/workflows/e1e3fa789ff94da7aa032f31b1b046e8/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ZsJszvq83i14t78Gi22R1KfWVe8BvXwpZl7-aZx2nkA",
+								"method": "POST",
+								"body": {
+									"value": "@concat('{\"to\":\"',item().email,'\",\n\t\"Subject\":\"Edufulness : Special Early Bird Offer - 10% Off on Azure Data Engineering Skills!\",\n\t\"Body\":\"<body>\n    <p>Dear <b>',item().full_name,'</b>\n,</p>\n\n<p>We hope this message finds you well. We are thrilled to announce the commencement of a new batch for our highly acclaimed Azure Data Engineering course, and we wanted you to be among the first to know!</p>\n\n<p><b>Course Highlights:</b></p>\n<ul>\n<li>In-depth exploration of Azure SQL Server, Azure Data Factory, Azure Synapse Analytics, Databricks, Logic App, Blob Storage, and Azure Data Lake.\n<li>40+ real-world scenarios and 2 major industry projects.\n<li>Hands-on experience with cutting-edge technologies.\n<li>Expert instruction by industry professionals.\n<li>Access to any of Our five Udemy courses (Bestseller and Highest Rated).\n</ul>\n<p><b>Special Early Bird Offer:</b></p>\n<p><b>We understand your passion for learning, and we are excited to offer you an exclusive 10% discount on the course fee. The original course fee is 10,000 rupees, but as an early bird, you can enroll for just 9,000 rupees on or before 27-09-2023!</b></p>\n\n<p>Why Choose Our Course?</p>\n<ul>\n<li>Comprehensive curriculum designed to equip you with practical skills.\n<li>Expert guidance from industry leaders.\n<li>Real-world projects for hands-on experience.\n<li>Supportive learning environment.\nDont miss this opportunity to supercharge your data engineering career at a discounted rate. Secure your spot today and take advantage of this limited-time offer!\n</p>\n\n<b>\n    <p>Demo Details:</p>\n    <ul>\n        <li>Date: Sep 30, 2023</li>\n        <li>Time: 10:00 AM India</li>\n    </ul>\n</b>\n    <p>Register in advance for this meeting:</p>\n <b>   Zoom Meeting\n        Registration: </b>\n    https://us06web.zoom.us/meeting/register/tZ0kd-uupzksGtPCZObAPImn9l7lVZfVC3Ib\n\n    <p>After registering, you will receive a confirmation email containing information about joining the meeting.</p>\n\n\nIf you have any questions or need further information, please feel free to reach out to us. We are here to support you on your journey to mastering Azure Data Engineering.\n\nWe look forward to welcoming you to our course and helping you achieve your career goals.\n\n<b>\n    <p>Best regards,</p>\n    <p>Atchyut Kumar<br>\n        Azure Data Engineering Instructor, Edufulness<br>\n        Mob: 9392955424 </p>\n</b>        \n</body>\n\"\n}')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Wait2",
+							"type": "Wait",
+							"dependsOn": [
+								{
+									"activity": "Web1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": []
+	}
+}
